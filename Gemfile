@@ -26,6 +26,7 @@ gem 'spring',        group: :development
 gem 'puma'
 gem 'pg'
 gem 'rack-timeout'
+gem 'bcrypt', '~> 3.1.7'
 
 group :production do
   gem 'rails_12factor'

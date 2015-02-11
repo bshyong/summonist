@@ -1,4 +1,5 @@
 class User < ActiveRecord::Base
+  has_secure_password
 
   validates :email, uniqueness: { case_sensitive: false }, allow_nil: true
   validates :username, uniqueness: { case_sensitive: false }, presence: true

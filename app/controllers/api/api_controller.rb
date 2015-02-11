@@ -7,7 +7,7 @@ class Api::ApiController < ApplicationController
 
   def authenticate_token
     authenticate_or_request_with_http_token do |token, options|
-      @user = User.find_by(auth_token: token)
+      @current_user = User.find_by(auth_token: token)
     end
     # api_key = request.headers['X-Api-Key']
     # @user = User.where(api_key: api_key).first if api_key
