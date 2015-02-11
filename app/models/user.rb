@@ -13,6 +13,11 @@ class User < ActiveRecord::Base
     end
   end
 
+  def set_auth_token!
+    set_auth_token
+    save
+  end
+
   def generate_auth_token
     SecureRandom.uuid.gsub(/\-/,'')
   end

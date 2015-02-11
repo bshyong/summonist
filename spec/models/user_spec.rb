@@ -17,13 +17,13 @@ RSpec.describe User, type: :model do
   describe "#set_auth_token" do
     it "generates a unique auth token" do
       allow(@user).to receive(:generate_auth_token) { "token"}
-      @user.set_auth_token
+      @user.set_auth_token!
       expect(@user.auth_token).to eql "token"
     end
     it "does not generate the same token for multiple users" do
       existing_user = FactoryGirl.create(:user)
-      existing_user.set_auth_token
-      @user.set_auth_token
+      existing_user.set_auth_token!
+      @user.set_auth_token!
       expect(@user.auth_token).not_to eql existing_user.auth_token
     end
   end
