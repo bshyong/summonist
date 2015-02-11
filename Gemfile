@@ -37,6 +37,7 @@ group :development, :test do
   gem 'factory_girl_rails'
   gem 'ffaker'
   gem 'guard-rspec'
+  gem 'shoulda-matchers'
   gem 'rb-fsevent' if `uname` =~ /Darwin/
 end
 

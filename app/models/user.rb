@@ -1,4 +1,8 @@
 class User < ActiveRecord::Base
+
+  validates :email, uniqueness: { case_sensitive: false }, allow_nil: true
+  validates :username, uniqueness: { case_sensitive: false }, presence: true
+
   # before_create :set_auth_token
   #
   # private
