@@ -1,7 +1,5 @@
 class Api::V1::UsersController < Api::ApiController
-  # respond_to :json
-
-  # before_action :authenticate
+  # before_action :authenticate_with_token!, only: [:update]
 
   def index
     @users = User.all
@@ -14,12 +12,12 @@ class Api::V1::UsersController < Api::ApiController
   end
 
   def update
-    user = User.find_by(id: params[:id])
+    user = current_user
 
     if user && user.update(user_params)
       render json: user, status: 200, location: [:api, user]
     else
-      render json: { errors: user.errors }, status: 422
+      render json: { errors: "Something went wrong" }, status: 422
     end
   end
 
@@ -32,9 +30,6 @@ class Api::V1::UsersController < Api::ApiController
       render json: { errors: user.errors }, status: 422
     end
   end
-
-  # authenticate update action
-  # before_filter set_user for methods that need it
 
   private
 

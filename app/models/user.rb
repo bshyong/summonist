@@ -5,6 +5,8 @@ class User < ActiveRecord::Base
   validates :username, uniqueness: { case_sensitive: false }, presence: true
   validates :auth_token, uniqueness: true, allow_nil: true
 
+  before_create :set_auth_token
+
   def set_auth_token
     return if auth_token.present?
     loop do

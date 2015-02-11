@@ -12,8 +12,6 @@ RSpec.describe User, type: :model do
   it { should validate_uniqueness_of(:username) }
   it { should validate_presence_of(:username) }
 
-  it { should validate_uniqueness_of(:auth_token) }
-
   describe "#set_auth_token" do
     it "generates a unique auth token" do
       allow(@user).to receive(:generate_auth_token) { "token"}

@@ -96,6 +96,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     context "when is successfully updated" do
       before(:each) do
         @user = FactoryGirl.create :user
+        api_authorization_header(@user.auth_token)
         patch :update, { id: @user.id,
                          user: { email: "new_email@example.com" } }
       end
@@ -122,7 +123,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
       it "renders json errors on why the user could not be created" do
         user_response = json_response
-        expect(user_response[:errors][:username]).to include "can't be blank"
+        expect(user_response[:errors]).to include "Something went wrong"
       end
 
       it { should respond_with 422 }
