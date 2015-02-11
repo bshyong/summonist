@@ -31,6 +31,15 @@ group :production do
   gem 'rails_12factor'
 end
 
+group :development, :test do
+  gem 'spring-commands-rspec'
+  gem 'rspec-rails'
+  gem 'factory_girl_rails'
+  gem 'ffaker'
+  gem 'guard-rspec'
+  gem 'rb-fsevent' if `uname` =~ /Darwin/
+end
+
 ruby "2.2.0"
 
 # Use ActiveModel has_secure_password
@@ -44,4 +53,3 @@ ruby "2.2.0"
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
-
