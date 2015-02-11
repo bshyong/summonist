@@ -1,16 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe Api::V1::UsersController, type: :controller do
-  before(:each) { request.headers['Accept'] = "application/vnd.summonist.v1" }
 
   describe "GET #index" do
     before(:each) do
       FactoryGirl.create_list(:user, 3)
-      get :index, format: :json
+      get :index
     end
 
     it "returns correct users" do
-      user_response = JSON.parse(response.body, symbolize_names: true)
+      user_response = json_response
       expect(user_response.count).to eql User.count
       user_response.each do |user|
         u = User.find(user[:id])
@@ -27,11 +26,11 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     context "when the user exists" do
       before(:each) do
         @user = FactoryGirl.create(:user)
-        get :show, id: @user.id, format: :json
+        get :show, id: @user.id
       end
 
       it "returns the correct user" do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
 
         expect(user_response[:id]).to eql @user.id
         expect(user_response[:username]).to eql @user.username
@@ -43,11 +42,11 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
     context "when user doesn't exist" do
       before(:each) do
-        get :show, id: "falseid", format: :json
+        get :show, id: "falseid"
       end
 
       it "returns 404" do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response).to eql({})
       end
 
@@ -60,11 +59,11 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     context "when is successfully created" do
       before(:each) do
         @user_attributes = FactoryGirl.attributes_for :user
-        post :create, { user: @user_attributes }, format: :json
+        post :create, { user: @user_attributes }
       end
 
       it "renders the json representation for the user record just created" do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response[:email]).to eql @user_attributes[:email]
         expect(user_response[:username]).to eql @user_attributes[:username]
       end
@@ -75,16 +74,16 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     context "when is not created" do
       before(:each) do
         @invalid_user_attributes = { password: "password" }
-        post :create, { user: @invalid_user_attributes }, format: :json
+        post :create, { user: @invalid_user_attributes }
       end
 
       it "renders an errors json" do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response).to have_key(:errors)
       end
 
       it "renders the json errors on why the user could not be created" do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response[:errors][:username]).to include "can't be blank"
       end
 
@@ -98,11 +97,11 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       before(:each) do
         @user = FactoryGirl.create :user
         patch :update, { id: @user.id,
-                         user: { email: "new_email@example.com" } }, format: :json
+                         user: { email: "new_email@example.com" } }
       end
 
       it "renders the json representation for the updated user" do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response[:email]).to eql "new_email@example.com"
       end
 
@@ -113,16 +112,16 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       before(:each) do
         @user = FactoryGirl.create :user
         patch :update, { id: @user.id,
-                         user: { username: "" } }, format: :json
+                         user: { username: "" } }
       end
 
       it "renders an errors json" do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response).to have_key(:errors)
       end
 
       it "renders json errors on why the user could not be created" do
-        user_response = JSON.parse(response.body, symbolize_names: true)
+        user_response = json_response
         expect(user_response[:errors][:username]).to include "can't be blank"
       end
 

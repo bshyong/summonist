@@ -4,6 +4,8 @@
 # this file to always be loaded, without a need to explicitly require it in any
 # files.
 #
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+
 # Given that it is always loaded, you are encouraged to keep this file as
 # light-weight as possible. Requiring heavyweight dependencies from this file
 # will add to the boot time of your test suite on EVERY test run, even for an
@@ -39,6 +41,16 @@ RSpec.configure do |config|
     # `true` in RSpec 4.
     mocks.verify_partial_doubles = true
   end
+
+  # include request helpers
+  config.include Request::JSONHelpers, type: :controller
+  config.include Request::HeadersHelpers, type: :controller
+
+  config.before(:each, type: :controller) do
+    include_default_accept_headers
+  end
+
+  config.order = :random
 
 # The settings below are suggested to provide a good initial experience
 # with RSpec, but feel free to customize to your heart's content.
