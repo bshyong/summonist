@@ -39,7 +39,7 @@ group :development, :test do
   gem 'ffaker'
   gem 'guard-rspec'
   gem 'shoulda-matchers'
-  gem 'rb-fsevent' if `uname` =~ /Darwin/
+  gem 'rb-fsevent'
 end
 
 ruby "2.2.0"
