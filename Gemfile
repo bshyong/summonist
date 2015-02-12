@@ -27,6 +27,7 @@ gem 'puma'
 gem 'pg'
 gem 'rack-timeout'
 gem 'bcrypt', '~> 3.1.7'
+gem 'active_model_serializers'
 
 group :production do
   gem 'rails_12factor'

@@ -10,8 +10,8 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
     it "returns correct users" do
       user_response = json_response
-      expect(user_response.count).to eql User.count
-      user_response.each do |user|
+      expect(user_response[:users].count).to eql User.count
+      user_response[:users].each do |user|
         u = User.find(user[:id])
         expect(user[:username]).to eql u.username
         expect(user[:email]).to eql u.email
@@ -31,6 +31,9 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
       it "returns the correct user" do
         user_response = json_response
+
+        expect(user_response).to_not have_key(:password_digest)
+        expect(user_response).to_not have_key(:auth_token)
 
         expect(user_response[:id]).to eql @user.id
         expect(user_response[:username]).to eql @user.username
