@@ -5,7 +5,8 @@ class Api::V1::SessionsController < Api::ApiController
 
     if user && user.authenticate(session_params[:password])
       user.set_auth_token!
-      render json: {user: user, auth_token: user.auth_token}, status: 200, location: [:api, user]
+
+      render json: {user: UserSerializer.new(user, root: false), auth_token: user.auth_token}, status: 200, location: [:api, user]
     else
       render json: {errors: "Invalid login"}, status: 422
     end
