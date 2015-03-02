@@ -201,6 +201,7 @@ DEPENDENCIES
   jbuilder (~> 2.0)
   jquery-rails
   pg
+  pry
   puma
   rack-timeout
   rails (= 4.1.8)

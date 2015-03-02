@@ -30,7 +30,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       end
 
       it "returns the correct user" do
-        user_response = json_response
+        user_response = json_response[:user]
 
         expect(user_response).to_not have_key(:password_digest)
         expect(user_response).to_not have_key(:auth_token)
@@ -66,7 +66,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       end
 
       it "renders the json representation for the user record just created" do
-        user_response = json_response
+        user_response = json_response[:user]
         expect(user_response[:email]).to eql @user_attributes[:email]
         expect(user_response[:username]).to eql @user_attributes[:username]
       end
@@ -105,7 +105,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
       end
 
       it "renders the json representation for the updated user" do
-        user_response = json_response
+        user_response = json_response[:user]
         expect(user_response[:email]).to eql "new_email@example.com"
       end
 

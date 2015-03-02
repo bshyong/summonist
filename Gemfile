@@ -41,6 +41,7 @@ group :development, :test do
   gem 'guard-rspec'
   gem 'shoulda-matchers'
   gem 'rb-fsevent'
+  gem 'pry'
 end
 
 ruby "2.2.0"

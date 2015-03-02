@@ -1,5 +1,7 @@
 class Api::ApiController < ApplicationController
 
+  skip_before_filter  :verify_authenticity_token
+
   def current_user
     @current_user ||= User.where.not(auth_token: nil).find_by(auth_token: request.headers['Authorization'])
   end
