@@ -5,6 +5,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
   describe "GET #index" do
     before(:each) do
       FactoryGirl.create_list(:user, 3)
+      api_authorization_header(User.first.auth_token)
       get :index
     end
 
@@ -26,6 +27,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     context "when the user exists" do
       before(:each) do
         @user = FactoryGirl.create(:user)
+        api_authorization_header(@user.auth_token)
         get :show, id: @user.id
       end
 
@@ -45,6 +47,8 @@ RSpec.describe Api::V1::UsersController, type: :controller do
 
     context "when user doesn't exist" do
       before(:each) do
+        @user = FactoryGirl.create(:user)
+        api_authorization_header(@user.auth_token)
         get :show, id: "falseid"
       end
 
@@ -115,6 +119,7 @@ RSpec.describe Api::V1::UsersController, type: :controller do
     context "when is not updated" do
       before(:each) do
         @user = FactoryGirl.create :user
+        api_authorization_header(@user.auth_token)
         patch :update, { id: @user.id,
                          user: { username: "" } }
       end

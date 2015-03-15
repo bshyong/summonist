@@ -1,5 +1,5 @@
 class Api::V1::UsersController < Api::ApiController
-  # before_action :authenticate_with_token!, only: [:update]
+  before_action :authenticate_with_token!, except: [:create]
 
   def index
     @users = User.all
@@ -9,6 +9,16 @@ class Api::V1::UsersController < Api::ApiController
   def show
     @user = User.find_by(id: params[:id])
     render json: @user || {}, status: (@user.nil? ? :not_found : :ok)
+  end
+
+  def set_location
+    user = current_user
+    location = params[:location]
+    if user.update lat: location[:lat], lng: location[:lng]
+      render json: user, status: 200, location: [:api, user]
+    else
+      render json: {errors: user.errors}, status: 422
+    end
   end
 
   def update
@@ -28,7 +38,6 @@ class Api::V1::UsersController < Api::ApiController
       # location returns url of newly created resource
       render json: user, status: 201, location: [:api, user]
     else
-      puts "ERROR: #{user.errors.inspect}"
       render json: { errors: user.errors }, status: 422
     end
   end

@@ -5,6 +5,7 @@ class Api::V1::SessionsController < Api::ApiController
 
     if user && user.authenticate(session_params[:password])
       user.set_auth_token!
+      user.update last_sign_in_at: Time.now, last_sign_in_ip: request.remote_ip
 
       render json: {user: UserSerializer.new(user, root: false), auth_token: user.auth_token}, status: 200, location: [:api, user]
     else
