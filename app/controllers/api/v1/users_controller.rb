@@ -14,16 +14,28 @@ class Api::V1::UsersController < Api::ApiController
   def set_location
     user = current_user
     location = params[:location]
-    if user.update lat: location[:lat], lng: location[:lng]
+    if user.update! lat: location[:lat], lng: location[:lng]
       render json: user, status: 200, location: [:api, user]
     else
       render json: {errors: user.errors}, status: 422
     end
   end
 
+  # {
+  #     deltaLat = "0.0901031127257856";
+  #     deltaLng = "0.1128458381110202";
+  #     location =     {
+  #         lat = "37.3376772";
+  #         lng = "-122.03083657";
+  #     };
+  # }
   def nearby
     user = current_user
-    user.nearby(distance: params[:distance])
+    location = params[:location]
+    deltaLat = params[:deltaLat]
+    deltaLng = params[:deltaLng]
+
+    render json: user.nearby(location: location, deltaLat: deltaLat, deltaLng: deltaLng), root: false
   end
 
   def update
