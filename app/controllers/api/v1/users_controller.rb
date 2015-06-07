@@ -21,6 +21,11 @@ class Api::V1::UsersController < Api::ApiController
     end
   end
 
+  def nearby
+    user = current_user
+    user.nearby(distance: params[:distance])
+  end
+
   def update
     user = current_user
 

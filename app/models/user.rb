@@ -7,6 +7,24 @@ class User < ActiveRecord::Base
 
   before_create :set_auth_token
 
+  # find other users within a certain distance
+  def nearby(distance: 30)
+    # 3959 if miles; 6271 if km
+    lat = self.lat
+    lng = self.lng
+    q = User.select("*,
+      ( 3959 * acos (
+          cos ( radians(#{lat}) )
+          * cos( radians( lat ) )
+          * cos( radians( lng ) - radians(#{lng}) )
+          + sin ( radians(#{lat}) )
+          * sin( radians( lat ) )
+      )) AS distance").to_sql
+    User.from(Arel.sql("(#{q}) AS users")).
+    where('distance <= ?', distance).
+    where.not(id: self.id)
+  end
+
   def set_auth_token
     return if auth_token.present?
     loop do
