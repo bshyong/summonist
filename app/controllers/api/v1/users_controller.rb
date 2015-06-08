@@ -21,21 +21,13 @@ class Api::V1::UsersController < Api::ApiController
     end
   end
 
-  # {
-  #     deltaLat = "0.0901031127257856";
-  #     deltaLng = "0.1128458381110202";
-  #     location =     {
-  #         lat = "37.3376772";
-  #         lng = "-122.03083657";
-  #     };
-  # }
   def nearby
     user = current_user
     location = params[:location]
     deltaLat = params[:deltaLat]
     deltaLng = params[:deltaLng]
 
-    render json: user.nearby(location: location, deltaLat: deltaLat, deltaLng: deltaLng), root: false
+    render json: user.nearby(location: location, deltaLat: deltaLat, deltaLng: deltaLng), root: false, status: 200
   end
 
   def update

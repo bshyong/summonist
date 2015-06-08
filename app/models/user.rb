@@ -8,8 +8,10 @@ class User < ActiveRecord::Base
   before_create :set_auth_token
 
   def nearby(location:, deltaLat:, deltaLng:)
-    lat = location[:lat]
-    lng = location[:lng]
+    lat = location[:lat].to_f
+    lng = location[:lng].to_f
+    deltaLat = deltaLat.to_f
+    deltaLng = deltaLng.to_f
 
     User.where(
       lat: (lat - deltaLat)..(lat + deltaLat),
