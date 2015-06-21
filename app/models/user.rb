@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
     User.where(
       lat: (lat - deltaLat)..(lat + deltaLat),
       lng: (lng - deltaLng)..(lng + deltaLng)
-    ).limit(50)
+    ).limit(100)
   end
 
   # find other users within a certain distance

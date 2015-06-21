@@ -11,6 +11,13 @@ class Api::V1::UsersController < Api::ApiController
     render json: @user || {}, status: (@user.nil? ? :not_found : :ok)
   end
 
+  def chat_auth
+    @identity_token = IdentityToken.new(user_id: current_user.id,
+                                    nonce: params[:nonce],
+                                    expires_at: 1.year.from_now) if params[:nonce]
+    render json: { identity_token: @identity_token }
+  end
+
   def set_location
     user = current_user
     location = params[:location]
