@@ -15,7 +15,7 @@ class Api::V1::UsersController < Api::ApiController
     @identity_token = IdentityToken.new(user_id: current_user.id,
                                     nonce: params[:nonce],
                                     expires_at: 1.year.from_now) if params[:nonce]
-    render json: { identity_token: @identity_token }
+    render json: { identity_token: @identity_token.try(:to_s) }
   end
 
   def set_location
