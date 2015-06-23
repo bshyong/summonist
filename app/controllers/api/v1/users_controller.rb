@@ -29,6 +29,11 @@ class Api::V1::UsersController < Api::ApiController
   end
 
   def nearby
+    # returns 100 users that are nearest current user
+    render json: current_user.within_radius, root: false, status: 200
+  end
+
+  def region
     user = current_user
     location = params[:location]
     deltaLat = params[:deltaLat]

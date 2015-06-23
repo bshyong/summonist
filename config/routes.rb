@@ -8,6 +8,7 @@ Rails.application.routes.draw do
           constraints: ApiConstraints.new(version: 1, default: true) do
       resources :users, only: [:index, :show, :update, :create]
       get '/chat_auth', to: 'users#chat_auth'
+      get '/region', to: 'users#region'
       get '/nearby', to: 'users#nearby'
       post '/set_location', to: 'users#set_location'
       post '/login', to: 'sessions#create'

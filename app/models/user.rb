@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
 
   before_create :set_auth_token
 
-  def nearby(location:, deltaLat:, deltaLng:)
+  def nearby(location:, deltaLat:, deltaLng:, limit: 100)
     lat = location[:lat].to_f
     lng = location[:lng].to_f
     deltaLat = deltaLat.to_f
@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
     User.where(
       lat: (lat - deltaLat)..(lat + deltaLat),
       lng: (lng - deltaLng)..(lng + deltaLng)
-    ).limit(100)
+    ).limit(limit)
   end
 
   # find other users within a certain distance
