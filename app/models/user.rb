@@ -20,7 +20,7 @@ class User < ActiveRecord::Base
   end
 
   # find other users within a certain distance
-  def within_radius(radius: 30)
+  def within_radius(radius: nil, limit: 100)
     # 3959 if miles; 6271 if km
     lat = self.lat
     lng = self.lng
@@ -32,9 +32,14 @@ class User < ActiveRecord::Base
           + sin ( radians(#{lat}) )
           * sin( radians( lat ) )
       )) AS distance").to_sql
-    User.from(Arel.sql("(#{q}) AS users")).
-    where('distance <= ?', distance).
-    where.not(id: self.id)
+
+    result = User.from(Arel.sql("(#{q}) AS users")).
+      where.not(id: self.id).
+      order(distance: :desc).
+      limit(limit)
+
+    result = result.where('distance <= ?', radius) if radius
+    result
   end
 
   def set_auth_token
